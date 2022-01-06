@@ -1,0 +1,11 @@
+{
+	"name":"RespawnPatch",
+	"author_name":"willuwontu",
+    "version_number":"1.0.0",
+	"website_url":"https://github.com/willuwontu/BlockForcePatch",
+	"displayName":"BlockForcePatch",
+	"description":"Fixes issues with some block stats not working properly.",
+	"dependencies": [
+		"BepInEx-BepInExPack_ROUNDS-5.4.1100"
+	]
+}

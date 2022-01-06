@@ -14,6 +14,12 @@
     <Reference Include="BepInEx">
       <HintPath>..\..\..\Visual Studio 2019\Projects\Rounds\Dependencies\BepInEx.dll</HintPath>
     </Reference>
+    <Reference Include="PhotonRealtime">
+      <HintPath>..\..\..\Visual Studio 2019\Projects\Rounds\Dependencies\PhotonRealtime.dll</HintPath>
+    </Reference>
+    <Reference Include="PhotonUnityNetworking">
+      <HintPath>..\..\..\Visual Studio 2019\Projects\Rounds\Dependencies\PhotonUnityNetworking.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\Visual Studio 2019\Projects\Rounds\Dependencies\UnityEngine.dll</HintPath>
     </Reference>

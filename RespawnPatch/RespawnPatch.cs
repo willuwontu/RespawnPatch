@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Photon.Pun;
+using RespawnPatch.Extensions;
 
 namespace RespawnPatch
 {
@@ -17,8 +18,6 @@ namespace RespawnPatch
         private const string ModName = "Respawn Patch";
         public const string Version = "1.0.0"; // What version are we on (major.minor.patch)?
 
-
-
         void Awake()
         {
             // Use this to call any harmony patch files your mod may have
@@ -26,13 +25,20 @@ namespace RespawnPatch
             harmony.PatchAll();
         }
 
-        internal static void CallReduceRespawns(int playerID)
+        internal static void CallReduceRespawns(Player player)
         {
-            Player player = PlayerManager.instance.players.Where(p => p.playerID == playerID).First();
-
-            if (PhotonNetwork.IsMasterClient)
+            if (player.data.stats.GetAdditionalData().respawnAction != null)
             {
-                player.data.view.RPC(nameof(RPCA_ReduceRespawns), RpcTarget.All, playerID);
+                player.data.stats.GetAdditionalData().respawnAction(player);
+            }
+
+            if (PhotonNetwork.OfflineMode)
+            {
+                player.data.stats.remainingRespawns--;
+            }
+            else if (PhotonNetwork.IsMasterClient)
+            {
+                player.data.view.RPC(nameof(RPCA_ReduceRespawns), RpcTarget.All, player.playerID);
             }
         }
 
