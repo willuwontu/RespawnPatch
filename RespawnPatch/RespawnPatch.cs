@@ -16,7 +16,7 @@ namespace RespawnPatch
     {
         private const string ModId = "com.willuwontu.rounds.RespawnPatch";
         private const string ModName = "Respawn Patch";
-        public const string Version = "1.0.0"; // What version are we on (major.minor.patch)?
+        public const string Version = "1.0.3"; // What version are we on (major.minor.patch)?
 
         void Awake()
         {
@@ -27,27 +27,20 @@ namespace RespawnPatch
 
         internal static void CallReduceRespawns(Player player)
         {
+            player.data.stats.remainingRespawns--;
+            player.data.healthHandler.isRespawning = true;
+
             if (player.data.stats.GetAdditionalData().respawnAction != null)
             {
-                player.data.stats.GetAdditionalData().respawnAction(player);
+                try
+                {
+                    player.data.stats.GetAdditionalData().respawnAction(player);
+                }
+                catch (Exception e)
+                {
+                    UnityEngine.Debug.LogException(e);
+                }
             }
-
-            if (PhotonNetwork.OfflineMode)
-            {
-                player.data.stats.remainingRespawns--;
-            }
-            else if (PhotonNetwork.IsMasterClient)
-            {
-                player.data.view.RPC(nameof(RPCA_ReduceRespawns), RpcTarget.All, player.playerID);
-            }
-        }
-
-        [PunRPC]
-        private void RPCA_ReduceRespawns(int playerID)
-        {
-            var player = PlayerManager.instance.players.Where(p => p.playerID == playerID).First();
-
-            player.data.stats.remainingRespawns--;
         }
     }
 }

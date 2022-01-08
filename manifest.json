@@ -1,9 +1,9 @@
 {
 	"name":"RespawnPatch",
 	"author_name":"willuwontu",
-    "version_number":"1.0.0",
-	"website_url":"https://github.com/willuwontu/BlockForcePatch",
-	"displayName":"BlockForcePatch",
+    "version_number":"1.0.3",
+	"website_url":"https://github.com/willuwontu/RespawnPatch",
+	"displayName":"RespawnPatch",
 	"description":"Fixes issues with players getting less respawns than they should.",
 	"dependencies": [
 		"BepInEx-BepInExPack_ROUNDS-5.4.1100"
