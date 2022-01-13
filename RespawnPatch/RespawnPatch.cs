@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Photon.Pun;
-using RespawnPatch.Extensions;
 
 namespace RespawnPatch
 {
@@ -29,18 +28,15 @@ namespace RespawnPatch
         {
             player.data.stats.remainingRespawns--;
             player.data.healthHandler.isRespawning = true;
+        }
 
-            if (player.data.stats.GetAdditionalData().respawnAction != null)
+        internal static bool IsPlayerResponsibleForRespawnsO(Player player)
+        {
+            if (!player.data.dead && (player.data.view.IsMine || PhotonNetwork.OfflineMode))
             {
-                try
-                {
-                    player.data.stats.GetAdditionalData().respawnAction(player);
-                }
-                catch (Exception e)
-                {
-                    UnityEngine.Debug.LogException(e);
-                }
+                return false;
             }
+            return true;
         }
     }
 }
