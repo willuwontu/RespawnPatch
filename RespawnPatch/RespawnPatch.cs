@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Photon.Pun;
-using RespawnPatch.Extensions;
 
 namespace RespawnPatch
 {
@@ -16,7 +15,7 @@ namespace RespawnPatch
     {
         private const string ModId = "com.willuwontu.rounds.RespawnPatch";
         private const string ModName = "Respawn Patch";
-        public const string Version = "1.0.3"; // What version are we on (major.minor.patch)?
+        public const string Version = "1.0.4"; // What version are we on (major.minor.patch)?
 
         void Awake()
         {
@@ -25,22 +24,13 @@ namespace RespawnPatch
             harmony.PatchAll();
         }
 
-        internal static void CallReduceRespawns(Player player)
+        internal static bool IsPlayerResponsibleForRespawns(CharacterData data)
         {
-            player.data.stats.remainingRespawns--;
-            player.data.healthHandler.isRespawning = true;
-
-            if (player.data.stats.GetAdditionalData().respawnAction != null)
+            if (!data.dead && (data.view.IsMine || PhotonNetwork.OfflineMode))
             {
-                try
-                {
-                    player.data.stats.GetAdditionalData().respawnAction(player);
-                }
-                catch (Exception e)
-                {
-                    UnityEngine.Debug.LogException(e);
-                }
+                return false;
             }
+            return true;
         }
     }
 }
