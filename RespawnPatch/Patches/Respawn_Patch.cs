@@ -16,7 +16,7 @@ namespace RespawnPatch.Patches
             var codes = new List<CodeInstruction>(instructions);
             var codesToInsert = new List<CodeInstruction>();
             /* Replace
-             *      this.data.stats.remainingRespawns--;
+             *      if (this.data.dead)
              * with
              *      ReduceRespawns(data.player.PlayerID);
              */
@@ -26,15 +26,15 @@ namespace RespawnPatch.Patches
             //codes[10].opcode = OpCodes.Nop;
             //codes.RemoveRange(11, 7);
 
-            var reduceRespawns = AccessTools.Method(typeof(RespawnPatch), nameof(RespawnPatch.ReduceRespawns), new Type[] { typeof(CharacterData) });
+            var reduceRespawns = AccessTools.Method(typeof(RespawnPatch), nameof(RespawnPatch.IsAllowedToRunRespawn), new Type[] { typeof(CharacterData) });
 
             for (var i = 0; i < codes.Count; i++)
             {
                 UnityEngine.Debug.Log($"{i}: {codes[i].opcode}, {codes[i].operand}");
             }
 
-            codes.RemoveRange(13, 17);
-            codes[12] = new CodeInstruction(OpCodes.Call, reduceRespawns);
+            //codes.RemoveRange(13, 17);
+            codes[7] = new CodeInstruction(OpCodes.Call, reduceRespawns);
 
             for (var i = 0; i < codes.Count; i++)
             {

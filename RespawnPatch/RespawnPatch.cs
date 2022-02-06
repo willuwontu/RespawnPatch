@@ -24,13 +24,14 @@ namespace RespawnPatch
             harmony.PatchAll();
         }
 
-        internal static void ReduceRespawns(CharacterData data)
+        internal static bool IsAllowedToRunRespawn(CharacterData data)
         {
-            if (!data.healthHandler.isRespawning)
+            if (data.healthHandler.isRespawning || data.dead)
             {
-                data.healthHandler.isRespawning = true;
-                data.stats.remainingRespawns--;
+                return true;
             }
+
+            return false;
         }
     }
 }
