@@ -15,7 +15,7 @@ namespace RespawnPatch
     {
         private const string ModId = "com.willuwontu.rounds.RespawnPatch";
         private const string ModName = "Respawn Patch";
-        public const string Version = "1.0.4"; // What version are we on (major.minor.patch)?
+        public const string Version = "1.0.5"; // What version are we on (major.minor.patch)?
 
         void Awake()
         {
@@ -24,13 +24,13 @@ namespace RespawnPatch
             harmony.PatchAll();
         }
 
-        internal static bool IsPlayerResponsibleForRespawns(CharacterData data)
+        internal static void ReduceRespawns(CharacterData data)
         {
-            if (!data.dead && (data.view.IsMine || PhotonNetwork.OfflineMode))
+            if (!data.healthHandler.isRespawning)
             {
-                return false;
+                data.healthHandler.isRespawning = true;
+                data.stats.remainingRespawns--;
             }
-            return true;
         }
     }
 }

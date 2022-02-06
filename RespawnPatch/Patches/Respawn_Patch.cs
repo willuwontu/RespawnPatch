@@ -8,21 +8,38 @@ using System.Reflection.Emit;
 
 namespace RespawnPatch.Patches
 {
-    [HarmonyPatch(typeof(HealthHandler), nameof(HealthHandler.DoDamage))]
-    class ReduceRespawn_Patch
+    [HarmonyPatch(typeof(HealthHandler), "RPCA_Die_Phoenix")]
+    class Respawn_Patch
     {
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
+            var codesToInsert = new List<CodeInstruction>();
+            /* Replace
+             *      this.data.stats.remainingRespawns--;
+             * with
+             *      ReduceRespawns(data.player.PlayerID);
+             */
+            //var player = AccessTools.Field(typeof(HealthHandler), "player");
+            //codes.RemoveRange(11, 7);
+            //codes.InsertRange(11, codesToInsert);
+            //codes[10].opcode = OpCodes.Nop;
+            //codes.RemoveRange(11, 7);
 
-            var checkResponsibility = AccessTools.Method(typeof(RespawnPatch), nameof(RespawnPatch.IsPlayerResponsibleForRespawns), new Type[] { typeof(CharacterData) });
+            var reduceRespawns = AccessTools.Method(typeof(RespawnPatch), nameof(RespawnPatch.ReduceRespawns), new Type[] { typeof(CharacterData) });
 
-            codes[102] = new CodeInstruction(OpCodes.Call, checkResponsibility);
+            for (var i = 0; i < codes.Count; i++)
+            {
+                UnityEngine.Debug.Log($"{i}: {codes[i].opcode}, {codes[i].operand}");
+            }
 
-            //for (var i = 0; i < codes.Count; i++)
-            //{
-            //    UnityEngine.Debug.Log($"{i}: {codes[i].opcode}, {codes[i].operand}");
-            //}
+            codes.RemoveRange(13, 17);
+            codes[12] = new CodeInstruction(OpCodes.Call, reduceRespawns);
+
+            for (var i = 0; i < codes.Count; i++)
+            {
+                UnityEngine.Debug.Log($"{i}: {codes[i].opcode}, {codes[i].operand}");
+            }
 
             return codes.AsEnumerable();
         }
