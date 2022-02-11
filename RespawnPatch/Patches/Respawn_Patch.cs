@@ -28,18 +28,18 @@ namespace RespawnPatch.Patches
 
             var reduceRespawns = AccessTools.Method(typeof(RespawnPatch), nameof(RespawnPatch.IsAllowedToRunRespawn), new Type[] { typeof(CharacterData) });
 
-            for (var i = 0; i < codes.Count; i++)
-            {
-                UnityEngine.Debug.Log($"{i}: {codes[i].opcode}, {codes[i].operand}");
-            }
+            //for (var i = 0; i < codes.Count; i++)
+            //{
+            //    UnityEngine.Debug.Log($"{i}: {codes[i].opcode}, {codes[i].operand}");
+            //}
 
             //codes.RemoveRange(13, 17);
             codes[7] = new CodeInstruction(OpCodes.Call, reduceRespawns);
 
-            for (var i = 0; i < codes.Count; i++)
-            {
-                UnityEngine.Debug.Log($"{i}: {codes[i].opcode}, {codes[i].operand}");
-            }
+            //for (var i = 0; i < codes.Count; i++)
+            //{
+            //    UnityEngine.Debug.Log($"{i}: {codes[i].opcode}, {codes[i].operand}");
+            //}
 
             return codes.AsEnumerable();
         }
