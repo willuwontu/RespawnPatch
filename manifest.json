@@ -1,7 +1,7 @@
 {
 	"name":"RespawnPatch",
 	"author_name":"willuwontu",
-    "version_number":"1.0.5",
+    "version_number":"1.0.6",
 	"website_url":"https://github.com/willuwontu/RespawnPatch",
 	"displayName":"RespawnPatch",
 	"description":"Fixes issues with players getting less respawns than they should.",
